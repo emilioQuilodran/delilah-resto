@@ -12,6 +12,7 @@ const userRoute = require("./routes/user.routes");
 const productsRoute = require("./routes/products.routes");
 const ordersRoute = require("./routes/orders.routes");
 
+/** usar dotenv para variables de entorno y prefijos de ruta */
 app.use('/api/user', userRoute);
 app.use('/api/products', productsRoute);
 app.use('/api/orders', ordersRoute);
