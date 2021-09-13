@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const path = "mysql://user_resto:qwerty1234@localhost:3306/db_bandas";
+const path = "mysql://user_resto:qwerty1234@localhost:3306/delilah_resto";
 
 const sequelize = new Sequelize(path, {
     logging: true
