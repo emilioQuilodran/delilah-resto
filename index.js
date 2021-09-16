@@ -14,11 +14,11 @@ const ordersRoute = require("./routes/orders.routes");
 const authRoute = require("./routes/auth.routes");
 
 /** usar dotenv para variables de entorno y prefijos de ruta */
-app.use('/api/auth', authRoute);
-app.use('/api/user', userRoute);
-app.use('/api/products', productsRoute);
-app.use('/api/orders', ordersRoute);
+app.use('/v1/api/auth', authRoute);
+app.use('/v1/api/user', userRoute);
+app.use('/v1/api/products', productsRoute);
+app.use('/v1/api/orders', ordersRoute);
 
-app.listen(PORT, () => {
+app.listen(PORT, "localhost", () => {
     console.log("servidor iniciado en:" , PORT);
 })
