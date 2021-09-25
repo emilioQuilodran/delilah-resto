@@ -16,7 +16,7 @@ const signUp = async (req, res) => {
         const response = await sequelize.query('INSERT into usuarios (nombre_usuario, email, telefono, direccion, contrasenia, id_tipo_usuario) values (?,?,?,?,?,?)',
         {replacements: arrayInsertUser, type: sequelize.QueryTypes.INSERT});
         res.status(201).json({
-            message: 'usuario creado con exito'
+            message: `login exitoso, bienvenido ${user}`
         })
 
     }catch(error){
