@@ -5,7 +5,8 @@ require('dotenv').config();
 const key = process.env.LANG;
 
 const createUser =  async (req,res) => {
-    const {name, email, phone, address, pass, role} = req.body;
+    const {name, email, phone, address, password, role} = req.body;
+    //const {error} = validateRegister.validate(req.body)
     if (error) {
         return res.status(400).json({
             error: error.detail[0].message
@@ -55,6 +56,7 @@ const getUsers = async (req, res) => {
         }
     }
 }
+
 const getUsersById = async (req, res) => {
     try {
         const result = await sequelize.query(`SELECT * FROM usuarios 
@@ -75,8 +77,60 @@ const getUsersById = async (req, res) => {
         }
     }
 }
-const updateUsersById = async (req, res) => {}
-const deleteUsersById = async (req, res) => {}
+
+const updateUsersById = async (req, res) => {
+    const {name, email, phone, address, password, role} = req.body;
+
+    if (error) {
+        return res.status(400).json({
+            error: error.detail[0].message
+        })
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    let arrayInsertUser = [`${name}`,`${email}`,`${phone}`,`${address}`,`${hashedPassword}`, `${role}`];
+    try{
+        const response = await sequelize.query('UPDATE into usuarios (nombre_usuario, email, telefono, direccion, contrasenia, id_tipo_usuario) values (?,?,?,?,?,?)',
+        {replacements: arrayInsertUser, type: sequelize.QueryTypes.UPDATE});
+        res.status(201).json({
+            message: 'usuario actualizado'
+        })
+    }catch(err){
+        if (err.name) {
+            res.status(400).json({
+                err,
+                message : 'error en la actualizacion'
+            })
+        } else {
+            res.status(500).json({
+                err,
+                message : 'Error inesperado'
+            })
+        }
+    }
+}
+
+const deleteUsersById = async (req, res) => {
+    try {
+        const result = await sequelize.query(`DELETE FROM usuarios WHERE id_usuario = ${req.params.userId}`)
+        res.status(204).json({
+            message: 'user eliminado',
+            result
+        })
+    } catch (error) {
+        if (error.name) {
+            res.status(400).json({
+                error,
+                message : 'error en la eliminación'
+            })
+        } else {
+            res.status(500).json({
+                error,
+                message : 'Error inesperado'
+            })
+        }
+    }
+}
 
 exports.createUser = createUser;
 exports.getUsers = getUsers;
