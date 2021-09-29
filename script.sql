@@ -1,16 +1,11 @@
--- creamos la tabla
 create database delilah_resto;
 use delilah_resto;
 
 
---modificar todos los tipos varchar de 100 a 255
--- modificar en la db el campo email
--- modificar telefono
-
 create table usuarios(
 	id_usuario int not null primary key auto_increment,
-	nombre_usuario varchar(100),
-	email varchar(100) not null unique,
+	nombre_usuario varchar(255),
+	email varchar(255) not null unique,
 	telefono varchar(255),
 	direccion varchar(255),
 	contrasenia varchar(255),
@@ -38,11 +33,8 @@ create table productos(
 	creation_date TIMESTAMP not null default CURRENT_TIMESTAMP,
 	updated_date TIMESTAMP not null default CURRENT_TIMESTAMP 
 )
---modificar tabla de pedidos en db
 create table pedidos(
 	id_pedido int not null primary key auto_increment,
-	descripcion varchar(255),
-	direccion varchar(255),
 	hora TIMESTAMP not null default CURRENT_TIMESTAMP,
 	id_estado int,
 	id_metodo_pago int,
@@ -59,12 +51,6 @@ create table estado(
 	id_estado int not null primary key auto_increment,
 	nombre varchar(255)
 )
-
---ALTER TABLE pedidos modify hora TIMESTAMP default CURRENT_TIMESTAMP not null;
-
---alter table pedidos add id_usuario int;
-
---alter table pedidos drop numero;
 
 ALTER TABLE pedidos
 ADD FOREIGN KEY (id_estado) REFERENCES estado(id_estado);

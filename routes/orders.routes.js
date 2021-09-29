@@ -2,14 +2,11 @@ const express = require('express')
 const router = express.Router()
 const ordersController = require('../controllers/orders.controller');
 
-/**
- * validar con un middleware, traer el archivo desde arafue
- */
-
-router.get('/', ordersController.all);
 router.post('/', ordersController.create);
+router.get('/', ordersController.all);
+router.get('/user', ordersController.getUserOrders);
 router.put('/', ordersController.edit);
-router.delete('/delete', ordersController.remove);
-// get by id
+routes.get('/:orderId', ordersController.getOrderById)
+router.delete('/:orderId', ordersController.remove);
 
 module.exports = router
