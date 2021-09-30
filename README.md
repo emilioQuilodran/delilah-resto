@@ -93,28 +93,28 @@ node index.js
 
 #API Desing:
 
-| Metodo  | Enpoint                Body                                                     | Header  | Descripcion                        |
+| Metodo  | Enpoint                | Body                                                     | Header  | Descripcion                        |
 |---------|------------------------|----------------------------------------------------------|---------|------------------------------------|
 | USERS   |                        |                                                          |         |                                    |
 |         |                        |                                                          |         |                                    |
 | POST    | /v1/api/auth/register  |{email,contrasenia}                                       |         | Registra un usuario nuevo          |
-| POST    | /v1/api/auth/login     |{nombre_user, email, phone, address, contrasenia, id_role} |         | Inicio de sesión del usuario      |
+| POST    | /v1/api/auth/login     |{nombre_user, email, phone, address, contrasenia, id_role}|         | Inicio de sesión del usuario       |
 | GET     | /v1/api/users          |                                                          | {TOKEN} | Obtiene todos los usuarios (Admin) |
-| POST    | /v1/api/users          |{nombre_user, email, phone, address, contrasenia, id_role} | {TOKEN} | Crear un nuevo usuario (Admin)    |
+| POST    | /v1/api/users          |{nombre_user, email, phone, address, contrasenia, id_role}| {TOKEN} | Crear un nuevo usuario (Admin)     |
 | GET     | /v1/api/users/:userId  |                                                          | {TOKEN} | Obtiene usuario por su ID (Admin)  |
-| DELETE  | /v1/api/users/:userId  |{userId} (por parámetro)                                 | {TOKEN} | Elimina Usuario (Admin)             |
+| DELETE  | /v1/api/users/:userId  |{userId} (por parámetro)                                  | {TOKEN} | Elimina Usuario (Admin)            |
 |         |                        |                                                          |         |                                    |
 | PRODUCTS|                        |                                                          |         |                                    |
 |         |                        |                                                          |         |                                    |
-| POST    | /v1/api/products       |{nombre, precio, imagen, descripcion}                               | {TOKEN} | Crea un producto (Admin) |
-| GET     | /v1/api/products       |                                                          |         | Devuelve todos los productos (platos)          |
-| GET     | /v1/api/products/:productsId |                                                          |         | Devuelve un producto según su ID      |
-| PUT     | /v1/api/products/:productsId |{nombre, precio, img}                                | {TOKEN} | Actualiza un plato (Admin)         |
-| DELETE  | /v1/api/products/:productsId |{productsID} (por parámetro)                                 | {TOKEN} | Elimina un plato (Admin)           |
+| POST    | /v1/api/products       |{nombre, precio, imagen, descripcion}                     | {TOKEN} | Crea un producto (Admin)           |
+| GET     | /v1/api/products       |                                                          |         |Devuelve todos los productos        |
+| GET     | /v1/api/products/:prdId|                                                          |         | Devuelve un producto según su ID   |
+| PUT     | /v1/api/products/:prdId|{nombre, precio, img}                                     | {TOKEN} | Actualiza un plato (Admin)         |
+| DELETE  | /v1/api/products/:prdId|{productsID} (por parámetro)                              | {TOKEN} | Elimina un plato (Admin)           |
 |         |                        |                                                          |         |                                    |
 | ORDERS  |                        |                                                          |         |                                    |
 |         |                        |                                                          |         |                                    |
-| POST    | /v1/api/orders         |{id_user, id, id_forma_pago, id_status}              | {TOKEN} | Crea una nueva orden               |
+| POST    | /v1/api/orders         |{id_user, id, id_forma_pago, id_status}                   | {TOKEN} | Crea una nueva orden               |
 | GET     | /v1/api/orders         |                                                          | {TOKEN} | Obtiene todas las órdenes (Admin)  |
 | GET     | /v1/api/orders/user    |                                                          | {TOKEN} | Obtiene las órdener del usuario    |
 | PUT     | /v1/api/orders/:orderId|{orderId} (por parámetro)                                 | {TOKEN} | Actualiza status orden (Admin)     |
