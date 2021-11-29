@@ -1,14 +1,14 @@
-const { Sequelize } = require("../conexion");
 const jwt = require('jsonwebtoken');
 const sequelize = require("../conexion");
 require('dotenv').config()
 
 const create =  async (req,res) => {
-    const {id_order, id_user, id_payment_method, id_status} = req.body;
-    let arrayInsertOrder = [`${id_order}`,`${id_user}`,`${id_payment_method}`,`${id_status}`];
+    const {id_user, id_payment_method, id_status} = req.body;
+    let arrayInsertOrder = [`${id_user}`,`${id_payment_method}`,`${id_status}`];
     try {
-        const result = await Sequelize.query('INSERT into orders (id_pedido, id_usuario, id_metodo_pago, id_estado) VALUES (?,?,?,?)',
-        {replacements: arrayInsertOrder, type: sequelize.queryTypes.INSERT })
+        const result = await sequelize.query('INSERT into pedidos ( id_usuario, id_metodo_pago, id_estado) VALUES (?,?,?)',
+        {replacements: arrayInsertOrder , type: sequelize.QueryTypes.INSERT })
+        console.log("result", result);
         res.status(201).json({
             message: "orden creada",
             result
@@ -16,7 +16,7 @@ const create =  async (req,res) => {
     }catch(error){
         if (error.name) {
             res.status(400).json({
-                error,
+                error : error.name,
                 message: 'error en la creación del pedido'
             })
         } else {
