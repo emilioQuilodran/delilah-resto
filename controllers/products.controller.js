@@ -69,9 +69,9 @@ const edit = async ( req, res) => {
     const { nombre, price, img, description } = req.body
 
     try {
-        const result = await sequelize.query(`UPDATE products 
+        const result = await sequelize.query(`UPDATE productos 
         SET nombre = "${nombre}",  
-        precio = "${price}", img = "${img}" , description = "${description}" 
+        precio = "${price}", imagen = "${img}" , descripcion = "${description}" 
         WHERE id_producto = ${req.params.id}`,
         { type: sequelize.QueryTypes.INSERT })
         res.status(204).json({
