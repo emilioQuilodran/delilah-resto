@@ -1,0 +1,648 @@
+swagger: "2.0"
+info:
+  description: "sistema de pedidos online para un restaurante [http://localhost:3000/v1/api/]"
+  version: "1.0.0"
+  title: "Delilah Restó"
+  termsOfService: "http://localhost:3000/v1/api/"
+  contact:
+    email: "emilio.lihue.q@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:3000"
+basePath: "/v1/api"
+tags:
+- name: "auth"
+  description: "Operaciones sobre registro y login"
+  externalDocs:
+    description: "Documentacion externa auth"
+    url: "http://localhost:3000/v1/api/auth"
+
+- name: "users"
+  description: "Operaciones CRUD users"
+  externalDocs:
+    description: "Documentacion externa users"
+    url: "http://localhost:3000/v1/api/users"
+    
+- name: "products"
+  description: "Operaciones CRUD products"
+  externalDocs:
+    description: "Documentacion externa de products"
+    url: "http://localhost:3000/v1/api/products"
+    
+- name: "orders"
+  description: "Operaciones CRUD orders"
+  externalDocs:
+    description: "Documentacion externa de orders"
+    url: "http://localhost:3000/v1/api/orders"
+schemes:
+- "https"
+- "http"
+paths:
+  /register:
+    post:
+      tags:
+      - "auth"
+      summary: "Registra un nuevo usuario en la aplicacion"
+      description: ""
+      operationId: "Nuevo Usuario"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objeto user para crear un usuario"
+        required: true
+        schema:
+          $ref: "#/definitions/users"
+      responses:
+        "201":
+           description: "Usuario Creado"
+        "400":
+          description: "Usuario ya existe"
+        "500":
+          description: "Error inesperado"
+          
+  /login:
+    post:
+      tags:
+      - "auth"
+      summary: "Login de un usuario"
+      description: ""
+      operationId: "indentificar usuario"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objeto para iniciar sesión en la app"
+        required: true
+        schema:
+          $ref: "#/definitions/usersLogin"
+      responses:
+        "200":
+          description: 'Bienvenido {usuario}'
+        "400":
+          description: "Usuario y/o contraseña inválida"
+        "500":
+          description: "Error inesperado"
+          
+  /users:
+    get:
+      tags:
+      - "users"
+      summary: "Obtener todos los usuarios"
+      description: ""
+      operationId: ""
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Operacion Realizada"
+          schema:
+            $ref: "#/definitions/users"
+        "404":
+          description: "Usuarios no encontrados"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "write:delilah"
+        - "read:delilah"
+
+    post:
+      tags:
+      - "users"
+      summary: "Crea un nuevo usuario"
+      description: ""
+      operationId: "NuevoUsuario"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Objeto user para crear un usuario"
+        required: true
+        schema:
+          $ref: "#/definitions/users"
+      responses:
+        "201":
+          description: "Usuario Creado"
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/users"
+        "400":
+          description: "Usuario ya existe"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "write:delilah"
+        - "read:delilah"
+
+  /users/{id_user}:
+    get:
+      tags:
+      - "users"
+      summary: "Busco un usuario por Id"
+      description: "Retorno un usuario"
+      operationId: ""
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "id_user"
+        in: "path"
+        description: "Identifica el id del usuario"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Operacion Realizada"
+          schema:
+            $ref: "#/definitions/users"
+        "404":
+          description: "Usuarios no encontrados"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "write:delilah"
+        - "read:delilah"
+          
+    put:
+      tags:
+      - "users"
+      summary: "Modifico el rol del usuario"
+      description: ""
+      operationId: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "id_user"
+        in: "path"
+        description: "ID of pet to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "204":
+          description: "user actulizado"
+          schema:
+            $ref: "#/definitions/roleUser"
+        "400":
+          description: "error en la actualización"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "write:delilah"
+        - "read:delilah"
+
+    delete:
+      tags:
+      - "users"
+      summary: "Elimino a un usuario"
+      description: ""
+      operationId: "eliminarUsuario"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "id_user"
+        in: "path"
+        description: "Eliminar usuario identificado"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "204":
+          description: "user eliminado"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "write:delilah"
+        - "read:delilah"
+          
+  /products:
+    post:
+      tags:
+      - "products"
+      summary: "Crea un nuevo plato"
+      description: ""
+      operationId: "NuevoPlato"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Objeto user para crear un nuevo plato"
+        required: true
+        schema:
+          $ref: "#/definitions/products"
+      responses:
+        "201":
+          description: "Plato creado"
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/products"
+        "400":
+          description: "error en la creación"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "write:delilah"
+        - "read:delilah"
+    get:
+      tags:
+      - "products"
+      summary: "Obtener todos los platos"
+      description: ""
+      operationId: ""
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Operacion Realizada"
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/products"
+        "404":
+          description: "error en la búsqueda"
+        "500":
+          description: "Error inesperado"
+  
+  /products/{id_meal}:
+    get:
+      tags:
+      - "products"
+      summary: "Busco un plato por Id"
+      description: ""
+      operationId: ""
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_meal"
+        in: "path"
+        description: "obtiene un plato por su ID"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Operacion Realizada"
+          schema:
+            $ref: "#/definitions/products"
+        "404":
+          description: "error en la búsqueda"
+        "500":
+          description: "Error inesperado"
+    put:
+      tags:
+      - "products"
+      summary: "Modifico el plato de comida"
+      description: ""
+      operationId: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "id_meal"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "204":
+          description: "plato actulizado"
+          schema:
+            $ref: "#/definitions/products"
+        "400":
+          description: "error en la actualización"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "write:delilah"
+        - "read:delilah"
+          
+    delete:
+      tags:
+      - "products"
+      summary: "Elimina un plato"
+      description: ""
+      operationId: ""
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "id_meal"
+        in: "path"
+        description: "Eliminar plato"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "204":
+          description: "plato eliminado"
+        "500":
+          description: "Error inesperado"
+      security:
+        - routes_auth:
+          - "write:delilah"
+          - "read:delilah"
+          
+  /orders:
+    get:
+      tags:
+      - "orders"
+      summary: "Obtener todas las órdenes"
+      description: ""
+      operationId: ""
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Operacion Realizada"
+          schema:
+            $ref: "#/definitions/orders"
+        "404":
+          description: "Usuarios no encontrados"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "write:delilah"
+        - "read:delilah"
+          
+    post:
+      tags:
+      - "orders"
+      summary: "Crea una nueva orden"
+      description: ""
+      operationId: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Objeto para crea una nueva orden"
+        required: true
+        schema:
+          $ref: "#/definitions/orders"
+      responses:
+        "201":
+          description: "Orden creada"
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/orders"
+        "400":
+          description: "error en la creación"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "write:delilah"
+        - "read:delilah"
+  
+  /orders/{id_order}:
+    put:
+      tags:
+      - "orders"
+      summary: "Modifico el status de la orden"
+      description: ""
+      operationId: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "id_order"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "204":
+          description: "orden actulizada"
+          schema:
+            $ref: "#/definitions/statusOrder"
+        "400":
+          description: "error en la actualización"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "write:delilah"
+        - "read:delilah"
+    delete:
+      tags:
+      - "orders"
+      summary: "Elimina una orden"
+      description: ""
+      operationId: ""
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "id_order"
+        in: "path"
+        description: "Eliminar orden"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "204":
+          description: "orden eliminada"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "write:delilah"
+        - "read:delilah"
+          
+  /orders/user:
+    get:
+      tags:
+      - "orders"
+      summary: "Obtener todas las órdenes de un usuario"
+      description: ""
+      operationId: ""
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "header"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Operacion Realizada"
+          schema:
+            $ref: "#/definitions/orders"
+        "404":
+          description: "orden no encontrados"
+        "500":
+          description: "Error inesperado"
+      security:
+      - routes_auth:
+        - "read:delilah"
+
+definitions:      
+  usersLogin:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+      
+  users:
+    type: "object"
+    properties:
+      id_user:
+        type: "integer"
+        format: "int64"
+      nombre_user:
+        type: "string"
+      email:
+        type: "string"
+      contrasena:
+        type: "string"
+      phone:
+        type: "string"
+      address:
+        type: "string"
+      id_role:
+        type: "integer"
+        format: "int32"
+
+  products:
+    type: 'object'
+    properties:
+      id_product:
+        type: "integer"
+        format: "int32" 
+      nombre:
+        type: 'string'
+      descripcion: 
+        type: 'string'
+      precio: 
+        type: "integer"
+      img:
+        type: 'string'
+        
+  orders:
+    type: 'object'
+    properties:
+      id_order:
+        type: "integer"
+        format: "int32"
+      nombre_meal:
+        type: "string"
+      nombre_forma_pago:
+          type: "string"
+      nombre_user:
+        type: "string"
+      address:
+        type: "string"
+      email:
+        type: "string"
+      nombre_status:
+        type: "string"
+        
+  statusOrder:
+    type: 'object'
+    properties:
+      id_status:
+        type: "integer"
+        format: "int32"
+      name:
+        type: 'string'
+  
+  roleUser:
+    type: 'object'
+    properties:
+      id_role:
+        type: "integer"
+        format: "int32"
+
+securityDefinitions:
+  routes_auth:
+    type: "oauth2"
+    authorizationUrl: "http://localhost:3000/v1/api/"
+    flow: "implicit"
+    scopes:
+      write:delilah: "modifica elementos en la api"
+      read:delilah: "lee elementos de la API"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
