@@ -30,13 +30,12 @@ const create =  async (req,res) => {
 
 const all = async (req, res) => {
     try {
-        const result = await sequelize.query(`SELECT id_pedido, hora, p.nombre, mp.nombre, u.nombre_usuario, u.direccion, u.email, e.nombre
+        const result = await sequelize.query(`SELECT id_pedido, hora, e.nombre as estado, mp.nombre as metodo_pago, u.nombre_usuario, u.direccion, u.email
         FROM pedidos left join usuarios u using(id_usuario)
-        left join productos p using(id_producto)
         left join estado e using(id_estado)
-        left join metodo_pago mp using(id_metodo_pago)`, {type: sequelize.queryTypes.SELECT})
+        left join metodo_pago mp using(id_metodo_pago)`, {type: sequelize.QueryTypes.SELECT})
         res.status(201).json({result})
-    }catch(err){
+    }catch(error){
         if (error.name) {
             res.status(404).json({
                 error,
@@ -56,12 +55,12 @@ const getUserOrders = async(req,res) => {
     const verify = jwt.verify(token, process.env.TOKEN_SECRET)
 
     try {
-        const result = await sequelize.query(`SELECT id_pedido, hora, p.nombre, mp.nombre, u.nombre_usuario, u.direccion, u.email, e.nombre
+        const result = await sequelize.query(`SELECT id_pedido, hora, e.nombre as estado, mp.nombre as metodo_pago, u.nombre_usuario, u.direccion, u.email
         FROM pedidos left join usuarios u using(id_usuario)
-        left join productos p using(id_producto)
         left join estado e using(id_estado)
         left join metodo_pago mp using(id_metodo_pago) WHERE id_usuario = ${verify.id_user}`, 
-        {type: sequelize.queryTypes.SELECT})
+        {type: sequelize.QueryTypes.SELECT})
+        res.status(200).json({result})
     } catch (error) {
         if (error.name) {
             res.status(404).json({

@@ -258,9 +258,9 @@ paths:
     post:
       tags:
       - "products"
-      summary: "Crea un nuevo plato"
+      summary: "Crea un nuevo producto"
       description: ""
-      operationId: "NuevoPlato"
+      operationId: "Nuevoproducto"
       consumes:
       - "application/json"
       produces:
@@ -272,13 +272,13 @@ paths:
         type: "string"
       - in: "body"
         name: "body"
-        description: "Objeto user para crear un nuevo plato"
+        description: "Objeto user para crear un nuevo producto"
         required: true
         schema:
           $ref: "#/definitions/products"
       responses:
         "201":
-          description: "Plato creado"
+          description: "producto creado"
           schema:
             type: "object"
             items:
@@ -294,7 +294,7 @@ paths:
     get:
       tags:
       - "products"
-      summary: "Obtener todos los platos"
+      summary: "Obtener todos los productos"
       description: ""
       operationId: ""
       produces:
@@ -311,19 +311,19 @@ paths:
         "500":
           description: "Error inesperado"
   
-  /products/{id_meal}:
+  /products/{id_product}:
     get:
       tags:
       - "products"
-      summary: "Busco un plato por Id"
+      summary: "Busco un producto por Id"
       description: ""
       operationId: ""
       produces:
       - "application/json"
       parameters:
-      - name: "id_meal"
+      - name: "id_product"
         in: "path"
-        description: "obtiene un plato por su ID"
+        description: "obtiene un producto por su ID"
         required: true
         type: "integer"
         format: "int64"
@@ -339,7 +339,7 @@ paths:
     put:
       tags:
       - "products"
-      summary: "Modifico el plato de comida"
+      summary: "Modifico el producto de comida"
       description: ""
       operationId: ""
       consumes:
@@ -351,7 +351,7 @@ paths:
         in: "header"
         required: true
         type: "string"
-      - name: "id_meal"
+      - name: "id_product"
         in: "path"
         description: ""
         required: true
@@ -359,7 +359,7 @@ paths:
         format: "int64"
       responses:
         "204":
-          description: "plato actulizado"
+          description: "producto actulizado"
           schema:
             $ref: "#/definitions/products"
         "400":
@@ -374,7 +374,7 @@ paths:
     delete:
       tags:
       - "products"
-      summary: "Elimina un plato"
+      summary: "Elimina un producto"
       description: ""
       operationId: ""
       produces:
@@ -384,15 +384,15 @@ paths:
         in: "header"
         required: true
         type: "string"
-      - name: "id_meal"
+      - name: "id_product"
         in: "path"
-        description: "Eliminar plato"
+        description: "Eliminar producto"
         required: true
         type: "integer"
         format: "int64"
       responses:
         "204":
-          description: "plato eliminado"
+          description: "producto eliminado"
         "500":
           description: "Error inesperado"
       security:
@@ -568,9 +568,6 @@ definitions:
   users:
     type: "object"
     properties:
-      id_user:
-        type: "integer"
-        format: "int64"
       nombre_user:
         type: "string"
       email:
@@ -588,25 +585,19 @@ definitions:
   products:
     type: 'object'
     properties:
-      id_product:
-        type: "integer"
-        format: "int32" 
       nombre:
         type: 'string'
       descripcion: 
         type: 'string'
       precio: 
         type: "integer"
-      img:
+      imagen:
         type: 'string'
         
   orders:
     type: 'object'
     properties:
-      id_order:
-        type: "integer"
-        format: "int32"
-      nombre_meal:
+      nombre_order:
         type: "string"
       nombre_forma_pago:
           type: "string"

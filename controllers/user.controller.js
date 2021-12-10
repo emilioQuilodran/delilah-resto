@@ -6,22 +6,17 @@ const key = process.env.LANG;
 
 const createUser =  async (req,res) => {
     const {name, email, phone, address, password, role} = req.body;
-    //const {error} = validateRegister.validate(req.body)
-    if (error) {
-        return res.status(400).json({
-            error: error.detail[0].message
-        })
-    }
 
     //hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     let arrayInsertUser = [`${name}`,`${email}`,`${phone}`,`${address}`,`${hashedPassword}`, `${role}`];
     try{
-        const response = await sequelize.query('INSERT into usuarios (nombre_usuario, email, telefono, direccion, contrasenia, id_tipo_usuario) values (?,?,?,?,?,?)',
+        const result = await sequelize.query('INSERT into usuarios (nombre_usuario, email, telefono, direccion, contrasenia, id_tipo_usuario) values (?,?,?,?,?,?)',
         {replacements: arrayInsertUser, type: sequelize.QueryTypes.INSERT});
         res.status(201).json({
-            message: 'usuario creado con exito'
+            message: 'usuario creado con exito',
+            result
         })
     }catch(err){
         if (err.name === 'SequelizeUniqueConstraintError') {
@@ -79,22 +74,17 @@ const getUsersById = async (req, res) => {
 }
 
 const updateUsersById = async (req, res) => {
-    const {name, email, phone, address, password, role} = req.body;
+    const {id_role} = req.body
 
-    if (error) {
-        return res.status(400).json({
-            error: error.detail[0].message
-        })
-    }
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    let arrayInsertUser = [`${name}`,`${email}`,`${phone}`,`${address}`,`${hashedPassword}`, `${role}`];
-    try{
-        const response = await sequelize.query('UPDATE into usuarios (nombre_usuario, email, telefono, direccion, contrasenia, id_tipo_usuario) values (?,?,?,?,?,?)',
-        {replacements: arrayInsertUser, type: sequelize.QueryTypes.UPDATE});
-        res.status(201).json({
-            message: 'usuario actualizado'
-        })
+    try {
+        const result = await sequelize.query(`UPDATE usuarios 
+        SET id_tipo_usuario = ${id_role} WHERE id_usuario = ${req.params.userId}`,
+        { type: sequelize.QueryTypes.UPDATE })
+        res.status(204).json({
+            message: 'user actulizado',
+            result
+    })
+
     }catch(err){
         if (err.name) {
             res.status(400).json({

@@ -15,7 +15,7 @@ const authRoute = require("./routes/auth.routes");
 
 app.use('/v1/api/health', healthRoute);
 app.use('/v1/api/auth', authRoute);
-app.use('/v1/api/user', userRoute);
+app.use('/v1/api/users', userRoute);
 app.use('/v1/api/products', productsRoute);
 app.use('/v1/api/orders', ordersRoute);
 
