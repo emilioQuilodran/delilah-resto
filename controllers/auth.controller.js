@@ -54,11 +54,11 @@ const signIn =  async (req,res) => {
             if(response){
                 const token = jwt.sign({
                     name: user.nombre_usuario,
-                    id_user: user.id_usuario 
+                    id_user: user.id_usuario,
+                    id_role: user.id_tipo_usuario
                 }, process.env.TOKEN_SECRET, {
                     expiresIn: process.env.EXPIRES_TOKEN
                 })
-                
                 const { nombre_usuario } = user;
                 res.status(200).header('Authorization', token).json({
                     error: null,

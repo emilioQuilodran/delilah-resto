@@ -3,28 +3,39 @@ require('dotenv').config();
 
 const verifyToken = async (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
-    if (!token) {
-        return res.status(401).json({error: 'Acceso denegado'})
-    }
     try {
-        const verify = jwt.verify(token, process.env.TOKEN_SECRET)
-        req.user = verify
-        next()
+        jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+            if(err){
+                console.log("ah ocurrido un error con la validacion del token");
+                return res.status(401).json({msg: "token invalido"})
+            }
+            next();
+        })
     } catch (error) {
-        res.status(400).json({error: 'token no válido'})
+        console.log("error:" + error);
+        res.status(401).json({ msg: 'debes proporcionar un token' });
     }
 }
 
 const isAdmin = async (req, res, next) =>{
-    const token = req.header('Authorization')
-    const verify = jwt.verify(token, process.env.TOKEN_SECRET)
-        if (verify.id_role === 2) {
-            next()
-            console.log(verify.nombre_usuario);
-            return
-        }
+    const token = req.headers.authorization.split(" ")[1];
+    try {
+        jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+            if(err){
+                console.log("ah ocurrido un error con la validacion del token");
+                return res.status(401).json({msg: "token invalido"})
+            }
+            if(decoded && decoded.id_role !== 2){
+                return res.status(403).json({message: 'Requiere role de administrador'})
+            }
+            next();
+        })
+    } catch (error) {
+        console.log("error:" + error);
+        res.status(401).json({ msg: 'debes proporcionar un token' });
+    }
 
-    return res.status(403).json({message: 'Requiere role de administrador'})
+    
 }
 
 exports.verifyToken = verifyToken;
